@@ -1,0 +1,67 @@
+---
+title: ''
+geometry: "left=2cm,right=2cm,top=1cm,bottom=1cm"
+output:
+  pdf_document: default
+classoption: landscape
+params:
+  name.i: ""
+  affiliation.i: ""
+  type.i: ""
+  event.i: ""
+  comm.type.i: ""
+  title.i: ""
+  date.i: ""
+  signer.i: ""
+  signer.role.i: ""
+  freetext.i: ""
+---
+
+\begin{center}
+\pagenumbering{gobble}
+
+% logos %
+\includegraphics[height=3cm]{lpic.png} 
+\hfill
+\includegraphics[height=3cm]{rpic.png}
+\linebreak
+\bigskip
+
+{\Huge\bf Certificate of participation} 
+\vfill
+
+{\Huge `r params$name.i` } \\
+
+\Large
+
+`r params$affiliation.i` \\
+\vfill
+
+has participated in the `r params$type.i` `r params$event.i` \\
+\vfill
+
+`r params$freetext.i` \\
+\vfill
+
+with the `r params$comm.type.i`: \\
+\vfill
+
+{\Huge\bf `r params$title.i` } \\
+\vfill
+
+
+on date `r params$date.i`. \\
+\vfill
+
+
+% signature %
+Signed by: \\
+\vfill
+\includegraphics[height=2cm]{spic.png} \\
+`r params$signer.i` \\
+`r params$signer.role.i` \\
+
+\end{center}
+\pagebreak
+
+

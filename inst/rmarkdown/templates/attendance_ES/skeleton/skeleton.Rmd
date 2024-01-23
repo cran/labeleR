@@ -1,0 +1,59 @@
+---
+title: ''
+geometry: "left=2cm,right=2cm,top=1cm,bottom=1cm"
+output:
+  pdf_document: default
+classoption: landscape
+params:
+  name.column.i: ""
+  type: ""
+  title: ""
+  date: ""
+  hours: ""
+  freetext: ""
+  signer: ""
+  signer.role: ""
+---
+
+\begin{center}
+\pagenumbering{gobble}
+
+% logos %
+\includegraphics[height=3cm]{lpic.png} 
+\hfill
+\includegraphics[height=3cm]{rpic.png}
+\linebreak
+\vfill
+
+{\fontsize{40pt}{40pt}\selectfont\bf Certificado de asistencia} 
+\vfill
+
+{\fontsize{40pt}{40pt}\selectfont `r params$name.column.i` } \\
+\vfill
+
+\Large
+
+ha asistido al `r params$type` {\bf `r params$title`} \\
+\vfill
+
+`r params$freetext` \\
+\vfill
+
+con fecha `r params$date` \\
+\vfill
+
+y una duración de `r params$hours` hora(s). \\
+\vfill
+
+
+% firma %
+Firmado por: \\
+\vfill
+\includegraphics[height=2cm]{spic.png}\\
+`r params$signer` \\
+`r params$signer.role` \\
+
+\end{center}
+\pagebreak
+
+

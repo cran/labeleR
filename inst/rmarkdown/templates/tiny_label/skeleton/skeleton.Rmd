@@ -1,0 +1,63 @@
+---
+title: ''
+geometry: "left=1cm,right=1cm,top=-1cm,bottom=-1cm"
+output:
+  pdf_document: default
+header-includes:
+    \usepackage{pgfpages}
+    \usepackage{qrcode}
+    \usepackage{pspicture}
+    \usepackage{mdframed}
+    \pgfpagesuselayout{4 on 1}[a4paper,border shrink=0mm]
+params:
+  qr.i: ""
+  field1.i: ""
+  field2.i: ""
+  field3.i: ""
+  field4.i: ""
+  field5.i: ""
+---
+
+```{r echo=FALSE, results='asis'}
+
+for (i in seq_along(params$field1.i)) {
+  
+  cat("
+  \\begin{mdframed}[linewidth=1pt,linecolor=black]\n
+  \\begin{minipage}[c]{0.7\\textwidth}
+  {\\fontsize{20pt}{100pt}\\selectfont", 
+  params$field1.i[i],
+  "} \\\\
+  {\\fontsize{20pt}{100pt}\\selectfont",
+  params$field2.i[i],
+  "} \\\\
+  {\\fontsize{20pt}{100pt}\\selectfont", 
+  params$field3.i[i],
+  "} \\\\
+  {\\fontsize{20pt}{100pt}\\selectfont",
+  params$field4.i[i],
+  "} \\\\
+  {\\fontsize{20pt}{100pt}\\selectfont",
+  params$field5.i[i],
+  "} \\\\
+  \\end{minipage}
+  \\hspace{0.01\\textwidth}
+  \\begin{minipage}[c]{0.05\\textwidth}",
+  if (params$qr.i[i] != "") "\\qrcode[height=1.8in, version=5]{",
+  if (params$qr.i[i] != "") params$qr.i[i],
+  if (params$qr.i[i] != "") "}",
+  "
+  \\end{minipage}
+  \\end{mdframed}\n
+  \\vfill
+  ",
+  if (i %% 4 == 0){
+    "\\pagebreak"
+  }
+    )
+}
+```
+
+
+
+
