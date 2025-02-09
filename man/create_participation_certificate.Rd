@@ -10,10 +10,13 @@ create_participation_certificate(
   filename = NULL,
   language = c("English", "Spanish"),
   name.column = NULL,
-  affiliation.column = NULL,
-  comm.type.column = NULL,
-  title.column = NULL,
-  date.column = NULL,
+  affiliation.column = "",
+  comm.type.column = "",
+  title.column = "",
+  coauthor.column = "",
+  date.column = "",
+  email.column = NULL,
+  email.info = NULL,
   type = "",
   event = "",
   freetext = "",
@@ -46,8 +49,15 @@ participation type (e.g. poster, oral communication, etc)}
 \item{title.column}{Character. Name of the column in \code{data} storing the title of the
 contribution.}
 
+\item{coauthor.column}{Name of the column in \code{data} storing the names of the coauthors to the contribution.}
+
 \item{date.column}{Character. Name of the column in \code{data} storing dates of
 participation.}
+
+\item{email.column}{Character. Name of the column in \code{data} storing attendees' email address
+to automatically send them their certificates.}
+
+\item{email.info}{Object created using \code{\link[=configure_email]{configure_email()}} function.}
 
 \item{type}{Character (optional). Type of event (conference, workshop, seminar...)}
 

@@ -13,8 +13,12 @@
 #' participation type (e.g. poster, oral communication, etc)
 #' @param title.column Character. Name of the column in `data` storing the title of the
 #' contribution.
+#' @param coauthor.column Name of the column in `data` storing the names of the coauthors to the contribution.
 #' @param date.column Character. Name of the column in `data` storing dates of
 #' participation.
+#' @param email.column Character. Name of the column in `data` storing attendees' email address
+#' to automatically send them their certificates.
+#' @param email.info Object created using [configure_email()] function.
 #' @param type Character (optional). Type of event (conference, workshop, seminar...)
 #' @param event Character. Title of the event
 #' @param freetext Character (optional). Free text to insert before the date.
@@ -65,10 +69,13 @@ create_participation_certificate <- function(
     filename = NULL,
     language = c("English", "Spanish"),
     name.column = NULL,
-    affiliation.column = NULL,
-    comm.type.column = NULL,
-    title.column = NULL,
-    date.column = NULL,
+    affiliation.column = "",
+    comm.type.column = "",
+    title.column = "",
+    coauthor.column = "",
+    date.column = "",
+    email.column = NULL,
+    email.info = NULL,
     type = "",
     event = "",
     freetext = "",
@@ -105,20 +112,42 @@ create_participation_certificate <- function(
     if (language == "Spanish") {filename <- "Participacion"}
   }
 
+
+  sendmail <- sendmail_setup(email.column, email.info)
+
+
   check_column_in_df(data, name.column)
 
-  if (!is.null(affiliation.column)) {
+  if (affiliation.column != "") {
     check_column_in_df(data, affiliation.column)
     data[,affiliation.column]<- check_latex(data, affiliation.column)
   }
 
+  if (comm.type.column != "") {
   check_column_in_df(data, comm.type.column)
+  data[,comm.type.column]<- check_latex(data, comm.type.column)
+  }
+
+  if (coauthor.column != "") {
+    check_column_in_df(data, coauthor.column)
+    data[,coauthor.column]<- check_latex(data, coauthor.column)
+  }
+
+  if (date.column != "") {
+    check_column_in_df(data, date.column)
+    data[,date.column]<- check_latex(data, date.column)
+  }
+
 
   check_column_in_df(data, title.column)
 
-  check_column_in_df(data, date.column)
 
-  arguments <- c(name.column, comm.type.column, title.column, date.column)
+
+  if(!is.null(email.column)){
+    check_column_in_df(data, email.column)
+  }
+
+  arguments <- c(name.column, title.column) #these are the compulsory arguments
   arguments <- arguments[arguments!=""]
 
   data <- check_latex_columns(data, arguments)
@@ -187,8 +216,9 @@ create_participation_certificate <- function(
 
   for (i in 1:nrow(data)) {
     out.name <- filename
-    out.name <- paste0(out.name, "_", data[i, name.column], "_",
-                       gsub("/","-", data[i, date.column]))
+    out.name <- paste0(out.name, "_", data[i, name.column])
+    out.name <- check_file_name(out.name, ".pdf", path)
+
     output_file <- paste0(out.name,'.pdf')
 
     bl.char <- "~"
@@ -204,6 +234,7 @@ create_participation_certificate <- function(
         event.i       = if (event              == "") {bl.char} else {event},
         comm.type.i   = if (comm.type.column   == "") {bl.char} else {data[i, comm.type.column]},
         title.i       = if (title.column       == "") {bl.char} else {data[i, title.column]},
+        coauthor.i    = if (coauthor.column    == "") {bl.char} else {data[i, coauthor.column]},
         date.i        = if (date.column        == "") {bl.char} else {data[i, date.column]},
         freetext.i    = if (freetext           == "") {bl.char} else {freetext},
         signer.i      = if (signer             == "") {bl.char} else {signer},
@@ -211,7 +242,16 @@ create_participation_certificate <- function(
       )
     )
 
+      if(isTRUE(sendmail)){
+        send_mail(data = data,
+                 row = i,
+                 email.info = email.info,
+                 name.column  =  name.column ,
+                 email.column =  email.column,
+                 attachment = paste0(path, "/", output_file) )
+      }
+    }
   }
 
-}
+
 

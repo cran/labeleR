@@ -1,3 +1,23 @@
+# labeleR 0.4.0
+
+* New function to create book of abstracts
+
+# labeleR 0.3.0
+
+* New function to create randomized multichoice tests
+
+# labeleR 0.2.0
+
+* Allow sending certificates via mail
+
+# labeleR 0.1.4
+
+* Add inner margin to herbarium labels
+
+# labeleR 0.1.3
+
+* Allow bold and italic text within column texts
+
 # labeleR 0.1.2
 
 * Title added to .Rmd templates (changed in .yaml files).
